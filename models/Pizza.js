@@ -50,6 +50,7 @@ PizzaSchema.virtual('commentCount').get(function() {
   );
 });
 
+// create the pizza model using the PIzzaSchema
 const Pizza = model('Pizza', PizzaSchema);
 
 module.exports = Pizza;

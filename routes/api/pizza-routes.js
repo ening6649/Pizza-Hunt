@@ -1,4 +1,6 @@
 const router = require('express').Router();
+
+// import the functionality and hook it up with the routes
 const {
   getAllPizza,
   getPizzaById,

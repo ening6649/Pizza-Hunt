@@ -8,6 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+// mongoDB will find the database if it exist or create the database if it doesnt aka PIzza-hunt.
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/pizza-hunt', {
   useFindAndModify: false,
   useNewUrlParser: true,
