@@ -83,3 +83,43 @@ router.route('/').get(getCallbackFunction).post(postCallbackFunction);
 // is this same as this
 router.get('/', getCallbackFunction);
 router.post('/' postCallbackFunction);
+
+// In Mongoose, though, we can instruct the parent to keep track of its children, 
+// ..not the other way around
+
+// mongoose virtuals allows you to add vittual properties to a document
+// ..that arent stored in the database 
+// add more inofrmation to a database reponse so that we dont have to 
+// ..add in the information manually with a helper
+const pizza = await Pizza.findOne()
+pizza.commentCount // 5
+// get total count of comments and replies on retrieval
+PizzaSchema.virtual('commentCount').get(function() {
+  return this.comments.length;
+});
+
+// Even though the pizza stored the comment, all we can see is the comment _id. 
+// ..We also ran into this issue with SQL. There, we joined two tables to resolve the problem,
+// .. but in MongoDB we'll populate a field. To populate a field, 
+// ..just chain the .populate() method onto your query, passing in an object with the key path 
+// ..plus the value of the field you want populated.
+// update getAllPizzas() method in pizza-controller
+Pizza.find({})
+  .populate({
+    path: 'comments',
+    // select option tell mongoose we dont care about the _v field on commments
+    // the - sign in front indicates we dont want it to be returned. 
+    // without the -sign , means it would return only the _v field
+    select: '-__v'
+  })
+  .then(dbPizzaData => res.json(dbPizzaData))
+
+// getters - transform the data by default everytime it s queried
+// takes the stored data you are looking to retrieve and modifies or 
+// ..formats it upon return
+// mongoose has a built in GET method, use it within the schema 
+createdAt: {
+  type: Date,
+  default: Date.now,
+  get: (createdAtVal) => dateFormat(createdAtVal)
+},

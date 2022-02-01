@@ -8,6 +8,9 @@ const commentController = {
       .then(({ _id }) => {
         return Pizza.findOneAndUpdate(
           { _id: params.pizzaId },
+          // push method to add comment's id to the specific pizza we want to update
+          // adds data to an array 
+          // all MongoDB-based functions like push start with $
           { $push: { comments: _id } },
           { new: true }
         );
@@ -41,14 +44,19 @@ const commentController = {
   },
 
   // remove comment
+  // not only do we need to delete the comment, but also need to remove
+  // ..it from the pizza its associated with
   removeComment({ params }, res) {
+    // delete the comment
     Comment.findOneAndDelete({ _id: params.commentId })
       .then(deletedComment => {
         if (!deletedComment) {
           return res.status(404).json({ message: 'No comment with this id!' });
         }
+        // then use its id to remove it from the pizza
         return Pizza.findOneAndUpdate(
           { _id: params.pizzaId },
+          // remove the comment from the associated pizza data
           { $pull: { comments: params.commentId } },
           { new: true }
         );

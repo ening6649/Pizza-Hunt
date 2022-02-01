@@ -4,7 +4,10 @@ const dateFormat = require('../utils/dateFormat');
 const ReplySchema = new Schema(
   {
     // set custom id to avoid confusion with parent comment _id
+    // need a unique identifier instead of default id field created
+    // must import Types from mongoose 
     replyId: {
+      // but still generates the same type of objectID
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId()
     },
@@ -25,6 +28,7 @@ const ReplySchema = new Schema(
   },
   {
     toJSON: {
+      // use json format and use getter for createdAt above
       getters: true
     }
   }
@@ -45,7 +49,12 @@ const CommentSchema = new Schema(
       default: Date.now,
       get: createdAtVal => dateFormat(createdAtVal)
     },
+    // associate replies with comments
+    // have replies field populated with an array of data
+    // ..that adheres to the ReplySchema definition
     // use ReplySchema to validate data for a reply
+    // directly nested in a comment's document and not referred to'
+    // ...like the relationship between pizza and comment data 
     replies: [ReplySchema]
   },
   {
@@ -57,6 +66,7 @@ const CommentSchema = new Schema(
   }
 );
 
+// add a virtual for commentschema to get the total reply count 
 CommentSchema.virtual('replyCount').get(function() {
   return this.replies.length;
 });

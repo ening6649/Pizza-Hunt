@@ -9,6 +9,8 @@ const pizzaController = {
         select: '-__v'
       })
       .select('-__v')
+      // mongoose method .sort() so that the newest pizza will return first
+      // sort in desc order by id value 
       .sort({ _id: -1 })
       .then(dbPizzaData => res.json(dbPizzaData))
       .catch(err => {

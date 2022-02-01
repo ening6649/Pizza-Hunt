@@ -9,6 +9,7 @@ const $newCommentForm = document.querySelector('#new-comment-form');
 
 let pizzaId;
 
+// display a single pizza 
 function getPizza() {
   // get id of pizza
   const searchParams = new URLSearchParams(document.location.search.substring(1));
@@ -18,6 +19,7 @@ function getPizza() {
   fetch(`/api/pizzas/${pizzaId}`)
     .then(response => {
       console.log(response);
+      // check for a 4xx or 5xx error from server
       if (!response.ok) {
         console.log('hi');
         throw new Error({ message: 'Something went wrong!' });
@@ -29,6 +31,7 @@ function getPizza() {
     .catch(err => {
       console.log(err);
       alert('Cannot find a pizza with this id! Taking you back.');
+      // if there is a previous page , goes back there. 
       window.history.back();
     });
 }
@@ -100,6 +103,7 @@ function printReply(reply) {
 `;
 }
 
+// creating a new comment 
 function handleNewCommentSubmit(event) {
   event.preventDefault();
 
