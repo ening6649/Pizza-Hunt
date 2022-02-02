@@ -123,3 +123,58 @@ createdAt: {
   default: Date.now,
   get: (createdAtVal) => dateFormat(createdAtVal)
 },
+
+// Like .map(), the array prototype method .reduce() executes a function on each element in an array. 
+//.. However, unlike .map(), it uses the result of each function execution 
+//.. for each successive computation as it goes through the array. 
+//.. This makes it a perfect candidate for getting a sum of multiple values.
+// exmaple of a reduce method
+const developers = [
+  {
+    name: "Eliza",
+    experience: 7,
+    role: "manager"
+  },
+  {
+    name: "Manuel",
+    experience: 2,
+    role: "developer"
+  },
+  {
+    name: "Kim",
+    experience: 5,
+    role: "developer"
+  }
+];
+
+function calculateAverage(total, years, index, array) {
+  total += years;
+  return index === array.length-1 ? total/array.length: total
+}
+
+const average = developers.map(dev => dev.experience).reduce(calculateAverage);
+// map grabs just the years of experience from each developer
+// ..then reduce is used to continually add on to a value within the scope of
+// ..the moethod known as the accumulator
+// ..then divide by the length of the entire array
+
+// $push allows for duplicates , $addtoset does not 
+// subdocument routes requires both ids of the sub and the parent document
+app.put('/api/pet/:id/owner/:owner_id',({params}, res)=>{
+  Pet.findbyIDandUpdate({_id: params.id}, {$pull:{owners: {_id:params.owner_id}}})
+}) 
+
+// PWA - progressive web application . abililty to install the app on a home screen
+// ..active push notification and offline experience
+
+// indexedDB is similar to localStorage but more involved, less retricted in the 
+// ..types of data that can be stored and behaves like an actual database
+// ..only accepts primitive data types, strings, numbers and booleans, 
+// .. more complex object or array needs to be converted into a string 
+
+// in indexedDB, the table is called an object store
+
+// under application # = number of the entry in the object store. 
+// key = auto-generated when autoincrement set to true 
+
+// Robo3T

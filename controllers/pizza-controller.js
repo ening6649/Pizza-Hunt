@@ -43,6 +43,8 @@ const pizzaController = {
 
   // update pizza by id
   updatePizza({ params, body }, res) {
+    // runValidtors will validate any new information when updating data 
+    // ..when it s not true, only validate when a user first create a pizza
     Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
       .then(dbPizzaData => {
         if (!dbPizzaData) {

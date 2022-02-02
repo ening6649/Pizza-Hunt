@@ -29,6 +29,7 @@ const commentController = {
   // add reply to comment
   addReply({ params, body }, res) {
     Comment.findOneAndUpdate(
+      // not actually creating a reply document, just updating an existing comment
       { _id: params.commentId },
       { $push: { replies: body } },
       { new: true, runValidators: true }
@@ -74,6 +75,8 @@ const commentController = {
   removeReply({ params }, res) {
     Comment.findOneAndUpdate(
       { _id: params.commentId },
+      // pull operator to remove replay from the replies array
+      // ..where the replyID matches the value of params.replyID passed in from the route
       { $pull: { replies: { replyId: params.replyId } } },
       { new: true }
     )

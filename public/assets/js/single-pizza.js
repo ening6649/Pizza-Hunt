@@ -157,6 +157,8 @@ function handleNewReplySubmit(event) {
 
   const formData = { writtenBy, replyBody };
 
+  
+// handle PUT requests for new replies 
   fetch(`/api/comments/${pizzaId}/${commentId}`, {
     method: 'PUT',
     headers: {
